@@ -1,14 +1,21 @@
 
 /*********************************************************************
-* CSE 453
+*   CSE 453
 * 
+*   Carlos N Reina
+*   Adrian Whetten
+*   Jordan Burdett 
+*   Caleb Georgeson 
+*   Russell Roberts 
+*   Stephen Ellis 
+*   Orion Christensen
+*
+*   Program:    
+*
 *********************************************************************/
 
 #include <iostream>
 #include <string>
-
-using namespace std;
-using namespace std::filesystem;
 
 /*********************************************************************
 *  displayMenu()
@@ -17,7 +24,7 @@ using namespace std::filesystem;
 *********************************************************************/
 void displayMenu()
 {
-    cout << "OPTIONS:\n"
+    std::cout << "OPTIONS:\n"
         << "   A  Option 1\n"
         << "   B  Option 2\n"
         << "   Q  Quit\n";
@@ -29,9 +36,9 @@ void displayMenu()
 *  displayPrompt()
 *  Displays passed message.
 *********************************************************************/
-void displayPrompt(string message)
+void displayPrompt(std::string message)
 {
-    cout << message << "\n";
+    std::cout << message << "\n";
     return;
 }
 
@@ -40,10 +47,9 @@ void displayPrompt(string message)
 *  Called by interact()
 *  Displays results.
 *********************************************************************/
-void displayResult(string message)
+void displayResult(std::string message)
 {
-    cout << "TEST RESULT: ";
-    cout << message << "\n\n";
+    std::cout << "TEST RESULT: " << message << "\n\n";
     return;
 }
 
@@ -52,9 +58,9 @@ void displayResult(string message)
 *  Called by interact()
 *  Displays error message.
 *********************************************************************/
-void displayError(string message)
+void displayError(std::string message)
 {
-    cout << message << "\n\n";
+    std::cout << message << "\n\n";
     return;
 }
 
@@ -65,7 +71,7 @@ void displayError(string message)
 *********************************************************************/
 void displayHeader()
 {
-    cout << "\n************ CSE 453 ************\n\n";
+    std::cout << "\n************ CSE 453 ************\n\n";
     return;
 }
 
@@ -91,17 +97,17 @@ void interact()
     displayMenu();
 
     char answer[2] = "";
-    string returnString;
+    std::string returnString;
     do
     {
-        if (cin.fail()) // bad input
+        if (std::cin.fail()) // bad input
         {
-            cin.clear();
-            cin.ignore();
+            std::cin.clear();
+            std::cin.ignore();
             continue;
         }
 
-        cin.getline(answer, 2);
+        std::cin.getline(answer, 2);
         if (islower(answer[0])) { answer[0] = toupper(answer[0]); }
         returnString.clear();
         switch (answer[0])
