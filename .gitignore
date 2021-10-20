@@ -1,2 +1,11 @@
 
 .DS_Store
+week06/workspace.code-workspace
+week06/.vscode/tasks.json
+week06/.vscode/settings.json
+week06/.vscode/launch.json
+week06/.vscode/cnr_unix_commands.code-snippets
+week06/.vscode/cnr_editor_tools.code-snippets
+.gitignore
+week06/.vscode/c_cpp_properties.json
+week06/.vscode/cnr_cpp.code-snippets
