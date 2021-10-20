@@ -10,8 +10,6 @@
 *   Stephen Ellis 
 *   Orion Christensen
 *
-*   Program:    
-*
 *********************************************************************/
 
 #include <iostream>
