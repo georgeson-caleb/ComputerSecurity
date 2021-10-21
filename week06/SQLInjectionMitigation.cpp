@@ -27,8 +27,11 @@ using namespace std;
 void displayMenu()
 {
     std::cout << "OPTIONS:\n"
-        << "   A  Option 1\n"
-        << "   B  Option 2\n"
+        << "   A  Test Valid\n"
+        << "   B  Test Tautology\n"
+        << "   C  Test Union\n"
+        << "   D  Test Additional Statement\n"
+        << "   E  Test Comment\n"
         << "   Q  Quit\n";
 
     return;
