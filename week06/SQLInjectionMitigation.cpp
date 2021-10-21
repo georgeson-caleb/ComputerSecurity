@@ -17,7 +17,30 @@
 #include <vector>
 #include <sstream>
 #include <string>
+
 using namespace std;
+
+/*********************************************************************
+*  clearScreen()
+*  Called by interact()
+*  Clears the screen.
+*********************************************************************/
+void clearScreen()
+{
+    if (system("CLS")) { system("clear"); }
+    return;
+}
+
+/*********************************************************************
+*  displayHeader()
+*  Called by interact()
+*  Displays app identifier.
+*********************************************************************/
+void displayHeader()
+{
+    cout << "\n************ CSE 453 ************\n\n";
+    return;
+}
 
 /*********************************************************************
 *  displayMenu()
@@ -26,7 +49,7 @@ using namespace std;
 *********************************************************************/
 void displayMenu()
 {
-    std::cout << "OPTIONS:\n"
+    cout << "OPTIONS:\n"
         << "   A  Test Valid\n"
         << "   B  Test Tautology\n"
         << "   C  Test Union\n"
@@ -38,16 +61,6 @@ void displayMenu()
 }
 
 /*********************************************************************
-*  displayPrompt()
-*  Displays passed message.
-*********************************************************************/
-void displayPrompt(std::string message)
-{
-    std::cout << message << "\n";
-    return;
-}
-
-/*********************************************************************
 *  displayResult()
 *  Called by interact()
 *  Displays results.
@@ -55,39 +68,6 @@ void displayPrompt(std::string message)
 void displayResult(std::string message)
 {
     std::cout << "TEST RESULT: " << message << "\n\n";
-    return;
-}
-
-/*********************************************************************
-*  displayError()
-*  Called by interact()
-*  Displays error message.
-*********************************************************************/
-void displayError(std::string message)
-{
-    std::cout << message << "\n\n";
-    return;
-}
-
-/*********************************************************************
-*  displayHeader()
-*  Called by interact()
-*  Displays app identifier.
-*********************************************************************/
-void displayHeader()
-{
-    std::cout << "\n************ CSE 453 ************\n\n";
-    return;
-}
-
-/*********************************************************************
-*  clearScreen()
-*  Called by interact()
-*  Clears the screen.
-*********************************************************************/
-void clearScreen()
-{
-    if (system("CLS")) { system("clear"); }
     return;
 }
 
@@ -133,21 +113,21 @@ string sanatizeString(string value)
 }
 
 /*********************************************************************
-*   genQuery
-*   Accepts a Username and Password
-*   Returns sql as a string
+*  genQuery()
+*  Provides no mitigation against all four attacks.
+*  Returns non-sanitized sql.
 *********************************************************************/
 string genQuery(string username, string password)
 {
-    std::string query = "SELECT * FROM USERS WHERE username = " + username + " AND password = " + password + ";";
+    string query = "SELECT * FROM USERS WHERE username = " + username + " AND password = " + password + ";";
 
     return query;
 }
 
 /*********************************************************************
-*   genQueryWeak
-*   Accepts a Username and Password
-*   Returns sql as a string
+*  genQueryWeak()
+*  Provides weak mitigation against all four attacks.
+*  Returns sanitized sql.
 *********************************************************************/
 string genQueryWeak(string username, string password)
 {
@@ -161,13 +141,12 @@ string genQueryWeak(string username, string password)
 }
 
 /*********************************************************************
-*   genQueryStrong
-*   Accepts a Username and Password
-*   Returns sql as a string
+*  genQueryStrong()
+*  Provides strong mitigation against all command injection attacks.
+*  Returns sanitized sql.
 *********************************************************************/
-std::string genQueryStrong(std::string username, std::string password)
+string genQueryStrong(string username, string password)
 {
-
     vector<char> iterator;
 
     //Tautology - itterate through the string and find an OR statement
@@ -183,57 +162,72 @@ std::string genQueryStrong(std::string username, std::string password)
     return query;
 }
 
-/********************************************************************
-* runTest
-* Accepts a username and password
-* Runs each genQuery function against the test case
-*********************************************************************/
-void runTest(string username, string password)
-{
-    cout << "\tUsername: " << username << endl;
-    cout << "\tPassword: " << password << endl;
-
-   // cout << "genQuery: " << genQuery(username, password) << endl;
-    cout << "genQueryWeak: " << genQueryWeak(username, password) << endl;
-   // cout << "genQueryStrong: " << genQueryStrong(username, password) << endl;
-
-    cout << endl;
-}
-
 /*********************************************************************
-*  testValid
-*  Tests for a valid input
+*  testValid()
+*  represents valid input where the username and the password consist 
+*  of letters, numbers, and underscores.
+*  displays the resulting query.
 *********************************************************************/
 void testValid()
 {
-    cout << "Starting tests for testValid()" << endl;
-
     string username, password, queryResults;
+    cout << "---------- Running Test Valid\n\n";
 
-    // Jordans test case
-    cout << "Jordan's test case: " << endl;
+    // Jordan's test case
     username = "jordanburdett";
     password = "P@ss_word1$$";
-    runTest(username, password);
-
-    // orion's test case and error checking.
-    cout << "Orion's test case: " << endl;
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+    
+    // Orion's test case.
     username = "Orionchristensen";
     password = "MJU&nhy6bgt5vfr4";
-    runTest(username, password);
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
-    // Adrians Test Case
-    cout << "Adrian's test case: " << endl;
+    // Adrian's Test Case
     username = "adrianWhetten";
     password = "ALPHAMOONDAWG";
-    runTest(username, password);
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
-    // caleb's test case
-    cout << "Caleb's test case: " << endl;
+    // Caleb's test case
     username = "calebgeorgeson";
     password = "totally_secure_password";
-    runTest(username, password);
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
+    // Carlos' test case
+    username = "carlosnreina";
+    password = "pass_123";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    //username = "carlosnreina";
+    //password = "pass_123";
+    //cout << "\tUsername:\t" << username << "\n";
+    //cout << "\tPassword:\t" << password << "\n";
+    //cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    //cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    //cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    cout << "---------- End of Test\n\n";
 
 }
 
@@ -244,18 +238,63 @@ void testValid()
 void testTautology()
 {
     string username, password, queryResults;
+    cout << "---------- Running Test Tautology\n\n";
 
-    //// Calebs test case
-    //cout << "Caleb's test case: " << endl;
-    //username = "calebgeorgeson' OR 'lol' = 'lol'";
-    //password = "totally_secure_password' OR 'a' = 'a'";
-    //runTest(username, password);
-
-    // jordans test case
-    cout << "Jordan's test case: " << endl;
+    // Jordan's test case
     username = "jordanburdett;;;;;;; AND SELECT asdf' OR 'abc' = 'abc'";
     password = "password' OR 'test' = 'test'";
-    runTest(username, password);
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Orion's test case.
+    username = "Orionchristensen";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Adrian's Test Case
+    username = "adrianWhetten";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Caleb's test case
+    username = "calebgeorgeson";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    username = "carlosnreina";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    //username = "carlosnreina";
+    //password = "TODO";
+    //cout << "\tUsername:\t" << username << "\n";
+    //cout << "\tPassword:\t" << password << "\n";
+    //cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    //cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    //cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    cout << "---------- End of Test\n\n";
 
 }
 
@@ -266,11 +305,63 @@ void testTautology()
 void testUnion()
 {
     string username, password, queryResults;
+    cout << "---------- Running Test Union\n\n";
 
-    cout << "Caleb's test case: " << endl;
+    // Jordan's test case
+    username = "jordanburdett;;;;;;; AND SELECT asdf' OR 'abc' = 'abc'";
+    password = "password' OR 'test' = 'test'";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Orion's test case.
+    username = "Orionchristensen";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Adrian's Test Case
+    username = "adrianWhetten";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Caleb's test case
     username = "calebgeorgeson";
     password = "totally_secure_password' UNION SELECT name, ssn FROM employee_data";
-    runTest(username, password);
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    username = "carlosnreina";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    //username = "carlosnreina";
+    //password = "TODO";
+    //cout << "\tUsername:\t" << username << "\n";
+    //cout << "\tPassword:\t" << password << "\n";
+    //cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    //cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    //cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    cout << "---------- End of Test\n\n";
 
 }
 
@@ -280,13 +371,64 @@ void testUnion()
 *********************************************************************/
 void testAddState()
 {
-
     string username, password, queryResults;
+    cout << "---------- Running Test Additional State\n\n";
 
-    cout << "Caleb's test case: " << endl;
+    // Jordan's test case
+    username = "jordanburdett;;;;;;; AND SELECT asdf' OR 'abc' = 'abc'";
+    password = "password' OR 'test' = 'test'";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Orion's test case.
+    username = "Orionchristensen";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Adrian's Test Case
+    username = "adrianWhetten";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Caleb's test case
     username = "calebgeorgeson";
     password = "totally_secure_password'; DELETE FROM employee_data";
-    runTest(username, password);
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    username = "carlosnreina";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    //username = "carlosnreina";
+    //password = "TODO";
+    //cout << "\tUsername:\t" << username << "\n";
+    //cout << "\tPassword:\t" << password << "\n";
+    //cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    //cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    //cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    cout << "---------- End of Test\n\n";
 
 }
 
@@ -298,17 +440,63 @@ void testComment()
 {
 
     string username, password, queryResults;
+    cout << "---------- Running Test Comment\n\n";
 
-    cout << "Orion's test case: " << endl;
-    username = "orion'; --";
-    password = "";
-    runTest(username, password);
-
-    cout << "Jordan's test case: " << endl;
+    // Jordan's test case
     username = "jordanburdett'; --";
     password = "you got hacked";
-    runTest(username, password);
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
+    // Orion's test case.
+    username = "orion'; --";
+    password = "";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Adrian's Test Case
+    username = "adrianWhetten";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Caleb's test case
+    username = "calebgeorgeson";
+    password = "totally_secure_password'; DELETE FROM employee_data";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    username = "carlosnreina";
+    password = "TODO";
+    cout << "\tUsername:\t" << username << "\n";
+    cout << "\tPassword:\t" << password << "\n";
+    cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    // Carlos' test case
+    //username = "carlosnreina";
+    //password = "TODO";
+    //cout << "\tUsername:\t" << username << "\n";
+    //cout << "\tPassword:\t" << password << "\n";
+    //cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
+    //cout << "\tgenQueryWeak:\t" << genQueryWeak(username, password) << "\n";
+    //cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
+
+    cout << "---------- End of Test\n\n";
 
 }
 
@@ -323,17 +511,17 @@ void interact()
     displayMenu();
 
     char answer[2] = "";
-    std::string returnString;
+    string returnString;
     do
     {
-        if (std::cin.fail()) // bad input
+        if (cin.fail()) // bad input
         {
-            std::cin.clear();
-            std::cin.ignore();
+            cin.clear();
+            cin.ignore();
             continue;
         }
 
-        std::cin.getline(answer, 2);
+        cin.getline(answer, 2);
         if (islower(answer[0])) { answer[0] = toupper(answer[0]); }
         returnString.clear();
         switch (answer[0])
@@ -341,20 +529,42 @@ void interact()
         case '\0': // no input
             clearScreen();
             displayHeader();
-            displayError("ERROR: Invalid command");
+            displayResult("ERROR: Invalid command");
             displayMenu();
             break;
 
-        case 'A':
+        case 'A': // Test Valid
             clearScreen();
+            displayHeader();
+            testValid();
+            displayMenu();
+            break;
+
+        case 'B': // Test Tautology
+            clearScreen();
+            displayHeader();
             testTautology();
             displayMenu();
             break;
 
-        case 'B':
+        case 'C': // Test Union
             clearScreen();
             displayHeader();
-            displayError("ERROR: Not implemented");
+            testUnion();
+            displayMenu();
+            break;
+
+        case 'D': // Test Additional Statement
+            clearScreen();
+            displayHeader();
+            testAddState();
+            displayMenu();
+            break;
+
+        case 'E': // Test Comment
+            clearScreen();
+            displayHeader();
+            testComment();
             displayMenu();
             break;
 
@@ -365,7 +575,7 @@ void interact()
         default:
             clearScreen();
             displayHeader();
-            displayError("ERROR: Invalid command");
+            displayResult("ERROR: Invalid command");
             displayMenu();
             break;
         }
@@ -373,8 +583,6 @@ void interact()
 
     return;
 }
-
-
 
 /*********************************************************************
 *   Main driver of the program
