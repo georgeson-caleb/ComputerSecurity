@@ -227,7 +227,7 @@ void testValid()
 
     // Carlos' test case
     username = "carlosnreina";
-    password = "pass_123";
+    password = "securePass_123";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -257,7 +257,7 @@ void testValid()
 }
 
 /*********************************************************************
-*  testTautology
+*  testTautology()
 *
 *********************************************************************/
 void testTautology()
@@ -302,8 +302,8 @@ void testTautology()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Carlos' test case
-    username = "carlosnreina";
-    password = "TODO";
+    username = "root/carlos";
+    password = "test' OR 'x' = 'x";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -333,7 +333,7 @@ void testTautology()
 }
 
 /*********************************************************************
-*  testUnion
+*  testUnion()
 *
 *********************************************************************/
 void testUnion()
@@ -378,8 +378,8 @@ void testUnion()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Carlos' test case
-    username = "carlosnreina";
-    password = "TODO";
+    username = "root/carlos";
+    password = "test' UNION SELECT authenticate FROM existentTable";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -409,13 +409,13 @@ void testUnion()
 }
 
 /*********************************************************************
-*  testAddState
-*
+*  testAddState()
+*  Additional Statement atack.
 *********************************************************************/
 void testAddState()
 {
     string username, password, queryResults;
-    cout << "---------- Running Test Additional State\n\n";
+    cout << "---------- Running Test Additional Statement\n\n";
 
     // Jordan's test case
     username = "jordanburdett;;;;;;; AND SELECT asdf' OR 'abc' = 'abc'";
@@ -455,7 +455,7 @@ void testAddState()
 
     // Carlos' test case
     username = "carlosnreina";
-    password = "TODO";
+    password = "test'; INSERT INTO passwordList (newName, newPasswd) VALUES 'Carlos', 'test";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -531,8 +531,8 @@ void testComment()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Carlos' test case
-    username = "carlosnreina";
-    password = "TODO";
+    username = "root/carlos'; --";
+    password = "test";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
