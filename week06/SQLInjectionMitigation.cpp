@@ -116,7 +116,8 @@ string sanitizeString(string value)
 /*********************************************************************
 *  genQuery()
 *  Provides no mitigation against all four attacks.
-*  Returns non-sanitized sql.
+*  Returns non-sanitized sql that epresents the query used to
+*  determine if a user is authenticated on a given system.
 *********************************************************************/
 string genQuery(string username, string password)
 {
@@ -128,7 +129,18 @@ string genQuery(string username, string password)
 /*********************************************************************
 *  genQueryWeak()
 *  Provides weak mitigation against all four attacks.
-*  Returns sanitized sql.
+*  Returns sanitized sql that epresents the query used to
+*  determine if a user is authenticated on a given system.
+* 
+*  NOTES:
+*  Last resort used when unable to perform complete or strong mitigation.
+*  Looks for input known to be dangerous.
+*  Prevents the attack by invalidating any user input containing
+*  a semicolon.
+*  This technique is called a blocklist, blacklist, or unapprovedlist.
+*  The list contains elements known to be unsafe.
+*  Effective if all unsafe elements reside on this list and no user input
+*  conforms to the list.
 *********************************************************************/
 string genQueryWeak(string username, string password)
 {
@@ -143,8 +155,17 @@ string genQueryWeak(string username, string password)
 
 /*********************************************************************
 *  genQueryStrong()
-*  Provides strong mitigation against all command injection attacks.
-*  Returns sanitized sql.
+*  Provides strong mitigation against all four attacks.
+*  Returns sanitized sql that epresents the query used to
+*  determine if a user is authenticated on a given system.
+* 
+*  NOTES:
+*  Next preferred option for when it is not possible to achieve
+*  complete mitigation.
+*  Restricts input to only valid commands.
+*  This technique is called an allowlist, whitelist, or approvelist.
+*  Effective as long as no unsafe elements reside on the list and
+*  all user input conforms to the list.
 *********************************************************************/
 string genQueryStrong(string username, string password)
 {
@@ -180,9 +201,9 @@ string genQueryStrong(string username, string password)
 
 /*********************************************************************
 *  testValid()
-*  represents valid input where the username and the password consist 
+*  Represents valid input where the username and the password consist 
 *  of letters, numbers, and underscores.
-*  displays the resulting query.
+*  Displays the resulting query.
 *********************************************************************/
 void testValid()
 {
