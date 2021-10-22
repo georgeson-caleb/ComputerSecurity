@@ -75,7 +75,7 @@ void displayResult(std::string message)
 *   sanitizeString
 *   Accepts a string value and searches for common SQL keywords and removes them.
 *********************************************************************/
-string sanatizeString(string value)
+string sanitizeString(string value)
 {
     string sanitizedString = "";
     stringstream stream(value);
@@ -92,6 +92,7 @@ string sanatizeString(string value)
             parsed == "JOIN" ||
             parsed == "ALTER" ||
             parsed == "DELETE" ||
+            parsed == "FROM" ||
             parsed == ";")
             continue;
 
@@ -119,7 +120,7 @@ string sanatizeString(string value)
 *********************************************************************/
 string genQuery(string username, string password)
 {
-    string query = "SELECT * FROM USERS WHERE username = " + username + " AND password = " + password + ";";
+    string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
 
     return query;
 }
@@ -131,11 +132,11 @@ string genQuery(string username, string password)
 *********************************************************************/
 string genQueryWeak(string username, string password)
 {
-    // sanatize the string
-    username = sanatizeString(username);
-    password = sanatizeString(password);
+    // sanitize the string
+    username = sanitizeString(username);
+    password = sanitizeString(password);
 
-    std::string query = "SELECT * FROM USERS WHERE username = " + username + " AND password = " + password + ";";
+    std::string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
 
     return query;
 }
@@ -156,8 +157,23 @@ string genQueryStrong(string username, string password)
 
     //Extra Statement - write a SQL statement with no 
 
+    // Comment - search both username and password for a "--" and remove the rest of the string
+    for (int i = 0; i < username.length(); i++) 
+    {
+        if (username[i] == '-' && username[i + 1] == '-')
+        {
+            username = username.substr(0, i);
+        }
+    }
+    for (int i = 0; i < password.length(); i++) 
+    {
+        if (password[i] == '-' && password[i + 1] == '-')
+        {
+            password = password.substr(0, i);
+        }
+    }
 
-    std::string query = "SELECT * FROM USERS WHERE username = " + username + "AND password = " + password + ";";
+    std::string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
 
     return query;
 }
@@ -269,7 +285,7 @@ void testTautology()
 
     // Caleb's test case
     username = "calebgeorgeson";
-    password = "TODO";
+    password = "password' OR 'a' = 'a";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -470,8 +486,8 @@ void testComment()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Caleb's test case
-    username = "calebgeorgeson";
-    password = "totally_secure_password'; DELETE FROM employee_data";
+    username = "calebgeorgeson' -- The rest is a comment ->";
+    password = "Whatever I want!";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
