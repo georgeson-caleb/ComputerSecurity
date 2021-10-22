@@ -12,3 +12,12 @@ week06/.vscode/cnr_cpp.code-snippets
 /week06/.vs/week06/v16/Browse.VC.opendb
 /week06/.vs/week06/v16/Browse.VC.db-wal
 /week06/.vs/week06/v16/Browse.VC.db-shm
+week06/.vs/week06/v16/.suo
+*.db
+*.exe
+*.pdb
+*.ilk
+*.log
+*.tlog
+*.obj
+*.idb
