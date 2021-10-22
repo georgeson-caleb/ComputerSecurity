@@ -55,7 +55,27 @@ void displayMenu()
         << "   C  Test Union\n"
         << "   D  Test Additional Statement\n"
         << "   E  Test Comment\n"
-        << "   Q  Quit\n";
+        << "   F  About Us\n"
+        << "   Q  Quit\n\n";
+
+    return;
+}
+
+/*********************************************************************
+*  displayAboutUs()
+*  Called by interact()
+*  Displays authors.
+*********************************************************************/
+void displayAboutUs()
+{
+    cout << "AUTHORS:\n"
+        << "   Carlos N Reina\n"
+        << "   Adrian Whetten\n"
+        << "   Jordan Burdett\n"
+        << "   Caleb Georgeson\n"
+        << "   Orion Christensen\n"
+        << "   Russell Roberts\n"
+        << "   Stephen Ellis\n\n";
 
     return;
 }
@@ -279,7 +299,11 @@ void testValid()
 
 /*********************************************************************
 *  testTautology()
-*
+*  Injects a boolean expression that always  evaluates  to  true.
+* 
+*  NOTES:
+*  Must contain an 'OR' command.
+*  It works when user input is fed directly into an SQL statement.
 *********************************************************************/
 void testTautology()
 {
@@ -355,7 +379,12 @@ void testTautology()
 
 /*********************************************************************
 *  testUnion()
+*  Inserts a UNION clause into the end of an SQL statement.
 *
+*  NOTES:
+*  Allows multiple statements to be joined into a single result to
+*  combine queries or make a single statement return a richer set
+*  of results.
 *********************************************************************/
 void testUnion()
 {
@@ -431,7 +460,15 @@ void testUnion()
 
 /*********************************************************************
 *  testAddState()
-*  Additional Statement atack.
+*  Additional Statement attack.
+*  Appends a semi-colon onto an SQL command stream.
+* 
+*  NOTES:
+*  Executes a second command  where the author intended only one.
+*  As with C++ and a variety of other languages, a semi-colon
+*  indicates the end of one statement and the beginning of a second.
+*  It can retrieve any information contained in the database, alter
+*  information, remove information, and physically destroy the server.
 *********************************************************************/
 void testAddState()
 {
@@ -506,8 +543,12 @@ void testAddState()
 }
 
 /*********************************************************************
-*  testComment
-*
+*  testComment()
+*  Specifies text that is ignored by the interpreter.
+* 
+*  NOTES:
+*  If a comment is inserted into part of an SQL statement, the
+*  remainder of the query will is ignored by the interpreter.
 *********************************************************************/
 void testComment()
 {
@@ -611,7 +652,6 @@ void interact()
         case '\0': // no input
             clearScreen();
             displayHeader();
-            displayResult("ERROR: Invalid command");
             displayMenu();
             break;
 
@@ -647,6 +687,13 @@ void interact()
             clearScreen();
             displayHeader();
             testComment();
+            displayMenu();
+            break;
+
+        case 'F': // About Us
+            clearScreen();
+            displayHeader();
+            displayAboutUs();
             displayMenu();
             break;
 
