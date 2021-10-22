@@ -97,40 +97,7 @@ void displayResult(std::string message)
 *********************************************************************/
 string sanitizeString(string value)
 {
-    string sanitizedString = "";
-    stringstream stream(value);
-    string parsed;
-    // select * from users where or and username = 'username'
-    while (getline(stream, parsed, ' '))
-    {
-        if (parsed == "" ||
-            parsed == "OR" ||
-            parsed == "AND" ||
-            parsed == "SELECT" ||
-            parsed == "UNION" ||
-            parsed == "INSERT" ||
-            parsed == "JOIN" ||
-            parsed == "ALTER" ||
-            parsed == "DELETE" ||
-            parsed == "FROM" ||
-            parsed == ";")
-            continue;
-
-        // add the parsed string to our vector
-        sanitizedString.append(parsed);
-    }
-
-    // remove semicolons
-    for (string::iterator iter = sanitizedString.begin(); iter != sanitizedString.end(); iter++)
-    {
-        if (*iter == ';')
-        {
-            iter = sanitizedString.erase(iter);
-            iter--;
-        }
-    }
-
-    return sanitizedString;
+    return "";
 }
 
 /*********************************************************************
@@ -164,11 +131,24 @@ string genQuery(string username, string password)
 *********************************************************************/
 string genQueryWeak(string username, string password)
 {
-    // sanitize the string
+
+    // filter illegal input
+    string blacklist[11]{"", "OR", "AND", "SELECT", "UNION", "INSERT", "JOIN", "ALTER", "DELETE", "FROM", ";"};
+ 
+    for (size_t i = 0; i < 11; i++)
+    {
+        if (username.find(blacklist[i]) > 0)
+        {
+
+        }
+    }
+
+    // process query
+    string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
     username = sanitizeString(username);
     password = sanitizeString(password);
 
-    std::string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
+   // std::string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
 
     return query;
 }
@@ -214,7 +194,7 @@ string genQueryStrong(string username, string password)
         }
     }
 
-    std::string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
+    string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
 
     return query;
 }
