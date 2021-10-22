@@ -257,7 +257,7 @@ void testValid()
 
     // Stephen's test case
     username = "stephenellis";
-    password = "TODO";
+    password = "TwoCool_4_YoU";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -332,8 +332,8 @@ void testTautology()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Stephen's test case
-    username = "stephenellis";
-    password = "TODO";
+    username = "stephen_Ellis";
+    password = "stephenellis' OR 'True' = 'True' OR 'getIn' = 'getIn";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -408,8 +408,8 @@ void testUnion()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Stephen's test case
-    username = "stephenellis";
-    password = "TODO";
+    username = "stephen_Ellis";
+    password = "newAndImproved_Password' UNION SELECT * FROM password";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -484,8 +484,8 @@ void testAddState()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Stephen's test case
-    username = "stephenellis";
-    password = "TODO";
+    username = "stephen_Ellis";
+    password = "newAndImproved_Password'; UNION SELECT * FROM password; UNION DELETE * FROM password";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -561,8 +561,8 @@ void testComment()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Stephen's test case
-    username = "stephenellis";
-    password = "TODO";
+    username = "stephen_Ellis'; -- newEntry for comment ";
+    password = "I got access!";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
