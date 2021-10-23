@@ -151,9 +151,8 @@ string genQueryWeak(string username, string password)
 
 /*********************************************************************
 *  genQueryStrong()
-*  Provides strong mitigation against all four attacks.
-*  Returns sanitized sql that epresents the query used to
-*  determine if a user is authenticated on a given system.
+*  Will return username and password if they are found in the 
+*  whitelist. Otherwise, it will return the entire string as empty.
 * 
 *  NOTES:
 *  Next preferred option for when it is not possible to achieve
