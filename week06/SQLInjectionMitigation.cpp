@@ -164,23 +164,27 @@ string genQueryWeak(string username, string password)
 *********************************************************************/
 string genQueryStrong(string username, string password)
 {
+    // filter illegal input
+    string blacklist[12] = { " ","'","OR","AND","SELECT","UNION","INSERT","JOIN","ALTER","DELETE","FROM",";" };
 
-    // Comment - search both username and password for a "--" and remove the rest of the string
-    for (int i = 0; i < username.length(); i++) 
+    for (size_t i = 0; i < 12; i++)
     {
-        if (username[i] == '-' && username[i + 1] == '-')
+        int position;
+        position = username.find(blacklist[i]);
+        if (position >= 0)
         {
-            username = username.substr(0, i);
+            username = username.erase(position, username.length());
+        }
+
+        position = password.find(blacklist[i]);
+        if (position >= 0)
+        {
+            password = password.erase(position, password.length());
         }
     }
-    for (int i = 0; i < password.length(); i++) 
-    {
-        if (password[i] == '-' && password[i + 1] == '-')
-        {
-            password = password.substr(0, i);
-        }
-    }
 
+    // process query
+    if (username.empty() || password.empty()) { return ""; }
     string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
 
     return query;
