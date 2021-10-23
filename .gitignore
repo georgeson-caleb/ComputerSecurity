@@ -6,9 +6,9 @@ week06/.vscode/settings.json
 week06/.vscode/launch.json
 week06/.vscode/cnr_unix_commands.code-snippets
 week06/.vscode/cnr_editor_tools.code-snippets
-.gitignore
 week06/.vscode/c_cpp_properties.json
 week06/.vscode/cnr_cpp.code-snippets
-/week06/.vs/week06/v16/Browse.VC.opendb
-/week06/.vs/week06/v16/Browse.VC.db-wal
-/week06/.vs/week06/v16/Browse.VC.db-shm
+week06/.vs/week06/v16/Browse.VC.opendb
+week06/.vs/week06/v16/Browse.VC.db-wal
+week06/.vs/week06/v16/Browse.VC.db-shm
+.vs
