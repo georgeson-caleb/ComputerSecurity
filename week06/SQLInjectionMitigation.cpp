@@ -586,8 +586,8 @@ void testComment()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Russell's test case
-    username = "russellroberts";
-    password = "TODO";
+    username = "russellroberts; --";
+    password = "It actually commented!";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
