@@ -1,0 +1,8 @@
+Debug
+.vs
+Project
+x64
+*.sln
+.vscode
+.DS_Store
+workspace.code-workspace
