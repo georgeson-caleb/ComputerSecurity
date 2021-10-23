@@ -1,2 +1,3 @@
 ﻿  SQLInjectionMitigation.cpp
+C:\Users\Carlos N Reina\Developer\cnreina_Developer\CSE 453\Week06Code\ComputerSecurity\week06\SQLInjectionMitigation.cpp(130,51): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Project.vcxproj -> C:\Users\Carlos N Reina\Developer\cnreina_Developer\CSE 453\Week06Code\ComputerSecurity\week06\x64\Debug\Project.exe

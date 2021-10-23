@@ -91,15 +91,6 @@ void displayResult(std::string message)
     return;
 }
 
-/********************************************************************
-*   sanitizeString
-*   Accepts a string value and searches for common SQL keywords and removes them.
-*********************************************************************/
-string sanitizeString(string value)
-{
-    return "";
-}
-
 /*********************************************************************
 *  genQuery()
 *  Provides no mitigation against all four attacks.
@@ -131,25 +122,34 @@ string genQuery(string username, string password)
 *********************************************************************/
 string genQueryWeak(string username, string password)
 {
-
     // filter illegal input
-    string blacklist[11]{"", "OR", "AND", "SELECT", "UNION", "INSERT", "JOIN", "ALTER", "DELETE", "FROM", ";"};
+    string blacklist[12]{" ","'", "OR", "AND", "SELECT", "UNION", "INSERT", "JOIN", "ALTER", "DELETE", "FROM", ";"};
  
-    for (size_t i = 0; i < 11; i++)
+    for (size_t i = 0; i < 12; i++)
     {
-        if (username.find(blacklist[i]) > 0)
+        int position = username.find(blacklist[i]);
+        if (position >= 0)
         {
+            username.erase(position, username.size());
+        }
 
+        if (position >= 0)
+        {
+            password.erase(position, password.size());
         }
     }
 
     // process query
+    if (username.empty())
+    {
+        return "";
+    }
+    if (password.empty())
+    {
+        return "";
+    }
     string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
-    username = sanitizeString(username);
-    password = sanitizeString(password);
-
-   // std::string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
-
+    
     return query;
 }
 
@@ -169,14 +169,6 @@ string genQueryWeak(string username, string password)
 *********************************************************************/
 string genQueryStrong(string username, string password)
 {
-    vector<char> iterator;
-
-    //Tautology - itterate through the string and find an OR statement
-    /*if (username.length() = || password.length() = ) {
-
-    }*/
-
-    //Extra Statement - write a SQL statement with no 
 
     // Comment - search both username and password for a "--" and remove the rest of the string
     for (int i = 0; i < username.length(); i++) 
@@ -309,8 +301,8 @@ void testTautology()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Adrian's Test Case
-    username = "adrianWhetten";
-    password = "TODO";
+    username = "adrianWhetten OR 'd'='d'";
+    password = "'junkPassword' OR 'kl' = 'kl'";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -372,8 +364,8 @@ void testUnion()
     cout << "---------- Running Test Union\n\n";
 
     // Jordan's test case
-    username = "jordanburdett;;;;;;; AND SELECT asdf' OR 'abc' = 'abc'";
-    password = "password' OR 'test' = 'test'";
+    username = "jordanburdett";
+    password = "password';";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -391,7 +383,7 @@ void testUnion()
 
     // Adrian's Test Case
     username = "adrianWhetten";
-    password = "TODO";
+    password = "doubleDipper; UNION SELECT * FROM USERS";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -474,8 +466,8 @@ void testAddState()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Adrian's Test Case
-    username = "adrianWhetten";
-    password = "TODO";
+    username = "'adrianWhetten'";
+    password = "'oldAndRundown_password'; DELETE * FROM USERS";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -555,8 +547,8 @@ void testComment()
     cout << "\tgenQueryStrong:\t" << genQueryStrong(username, password) << "\n\n";
 
     // Adrian's Test Case
-    username = "adrianWhetten";
-    password = "TODO";
+    username = "adrianWhetten; --";
+    password = "peek-a-boo";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
