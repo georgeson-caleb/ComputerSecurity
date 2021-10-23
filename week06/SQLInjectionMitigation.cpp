@@ -17,6 +17,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <array>
 
 using namespace std;
 
@@ -123,9 +124,9 @@ string genQuery(string username, string password)
 string genQueryWeak(string username, string password)
 {
     // filter illegal input
-    string blacklist[12] = {" ","'","OR","AND","SELECT","UNION","INSERT","JOIN","ALTER","DELETE","FROM",";"};
+    string blacklist[] = {" ","'","OR","AND","SELECT","UNION","INSERT","JOIN","ALTER","DELETE","FROM",";"};
  
-    for (size_t i = 0; i < 12; i++)
+    for (size_t i = 0; i < size(blacklist); i++)
     {
         int position;
         position = username.find(blacklist[i]);
