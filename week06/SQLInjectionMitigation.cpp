@@ -17,6 +17,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <array>
 
 using namespace std;
 
@@ -123,9 +124,9 @@ string genQuery(string username, string password)
 string genQueryWeak(string username, string password)
 {
     // filter illegal input
-    string blacklist[12] = {" ","'","OR","AND","SELECT","UNION","INSERT","JOIN","ALTER","DELETE","FROM",";"};
+    string blacklist[] = {" ","'","OR","AND","SELECT","UNION","INSERT","JOIN","ALTER","DELETE","FROM",";"};
  
-    for (size_t i = 0; i < 12; i++)
+    for (size_t i = 0; i < size(blacklist); i++)
     {
         int position;
         position = username.find(blacklist[i]);
@@ -150,9 +151,8 @@ string genQueryWeak(string username, string password)
 
 /*********************************************************************
 *  genQueryStrong()
-*  Provides strong mitigation against all four attacks.
-*  Returns sanitized sql that epresents the query used to
-*  determine if a user is authenticated on a given system.
+*  Will return username and password if they are found in the 
+*  whitelist. Otherwise, it will return the entire string as empty.
 * 
 *  NOTES:
 *  Next preferred option for when it is not possible to achieve
@@ -165,27 +165,31 @@ string genQueryWeak(string username, string password)
 string genQueryStrong(string username, string password)
 {
     // filter illegal input
-    string blacklist[12] = { " ","'","OR","AND","SELECT","UNION","INSERT","JOIN","ALTER","DELETE","FROM",";" };
+    string blacklist[] = { " ","'","OR","AND","SELECT","UNION","INSERT","JOIN","ALTER","DELETE","FROM",";" };
+    string whiteListUserName[] = { "jordanburdett", "Orionchristensen", "adrianWhetten", "calebgeorgeson", "carlosnreina", "stephenellis", "russellroberts"};
+    string whiteListPassword[] = { "P@ss_word1$$", "MJU&nhy6bgt5vfr4", "ALPHAMOONDAWG", "totally_secure_password", "securePass_123", "TwoCool_4_YoU", "Rustyspoon7171"};
 
-    for (size_t i = 0; i < 12; i++)
+    string correctUsername = "";
+    string correctPassword = "";
+    
+    for (size_t i = 0; i <= size(whiteListUserName); i++)
     {
-        int position;
-        position = username.find(blacklist[i]);
-        if (position >= 0)
-        {
-            username = username.erase(position, username.length());
+        if (username == whiteListUserName[i] && username.length() == whiteListUserName[i].length()) {
+            correctUsername = whiteListUserName[i];
         }
+    }
 
-        position = password.find(blacklist[i]);
-        if (position >= 0)
-        {
-            password = password.erase(position, password.length());
+    for (size_t i = 0; i <= size(whiteListPassword); i++)
+    {
+        if (password == whiteListPassword[i] && password.length() == whiteListPassword[i].length()) {
+            correctPassword = whiteListPassword[i];
         }
     }
 
     // process query
-    if (username.empty() || password.empty()) { return ""; }
-    string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
+    if (correctUsername.empty() || correctPassword.empty()) { return ""; }
+
+    string query = "SELECT * FROM USERS WHERE username = \'" + correctUsername + "\' AND password = \'" + correctPassword + "\';";
 
     return query;
 }

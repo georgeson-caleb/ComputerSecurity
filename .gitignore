@@ -1,14 +1,5 @@
 
 .DS_Store
-week06/workspace.code-workspace
-week06/.vscode/tasks.json
-week06/.vscode/settings.json
-week06/.vscode/launch.json
-week06/.vscode/cnr_unix_commands.code-snippets
-week06/.vscode/cnr_editor_tools.code-snippets
-week06/.vscode/c_cpp_properties.json
-week06/.vscode/cnr_cpp.code-snippets
-week06/.vs/week06/v16/Browse.VC.opendb
-week06/.vs/week06/v16/Browse.VC.db-wal
-week06/.vs/week06/v16/Browse.VC.db-shm
 .vs
+CppProperties.json
+
