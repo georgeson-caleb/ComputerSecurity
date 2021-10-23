@@ -123,31 +123,26 @@ string genQuery(string username, string password)
 string genQueryWeak(string username, string password)
 {
     // filter illegal input
-    string blacklist[12]{" ","'", "OR", "AND", "SELECT", "UNION", "INSERT", "JOIN", "ALTER", "DELETE", "FROM", ";"};
+    string blacklist[12] = {" ","'","OR","AND","SELECT","UNION","INSERT","JOIN","ALTER","DELETE","FROM",";"};
  
     for (size_t i = 0; i < 12; i++)
     {
-        int position = username.find(blacklist[i]);
+        int position;
+        position = username.find(blacklist[i]);
         if (position >= 0)
         {
-            username.erase(position, username.size());
+            username = username.erase(position, username.length());
         }
 
+        position = password.find(blacklist[i]);
         if (position >= 0)
         {
-            password.erase(position, password.size());
+            password = password.erase(position, password.length());
         }
     }
 
     // process query
-    if (username.empty())
-    {
-        return "";
-    }
-    if (password.empty())
-    {
-        return "";
-    }
+    if (username.empty() || password.empty()){ return ""; }
     string query = "SELECT * FROM USERS WHERE username = \'" + username + "\' AND password = \'" + password + "\';";
     
     return query;
@@ -293,7 +288,7 @@ void testTautology()
 
     // Orion's test case.
     username = "Orionchristensen";
-    password = "TODO";
+    password = "'gomdrop' OR 'test' = 'test'";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -365,7 +360,7 @@ void testUnion()
 
     // Jordan's test case
     username = "jordanburdett";
-    password = "password';";
+    password = "password'; UNION SELECT ";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -374,7 +369,7 @@ void testUnion()
 
     // Orion's test case.
     username = "Orionchristensen";
-    password = "TODO";
+    password = "starunion'; UNION SELECT * FROM USERS";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -383,7 +378,7 @@ void testUnion()
 
     // Adrian's Test Case
     username = "adrianWhetten";
-    password = "doubleDipper; UNION SELECT * FROM USERS";
+    password = "doubleDipper'; UNION SELECT * FROM USERS";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -458,7 +453,7 @@ void testAddState()
 
     // Orion's test case.
     username = "Orionchristensen";
-    password = "TODO";
+    password = "excelcior'; DELETE * from employee_data";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
@@ -539,7 +534,7 @@ void testComment()
 
     // Orion's test case.
     username = "orion'; --";
-    password = "";
+    password = "harhar!";
     cout << "\tUsername:\t" << username << "\n";
     cout << "\tPassword:\t" << password << "\n";
     cout << "\tgenQuery:\t" << genQuery(username, password) << "\n";
